@@ -1,5 +1,4 @@
-const path = require("path");
-require("dotenv").config({ path: path.resolve(__dirname, "./.env") });
+require("dotenv").config();
 
 const express = require("express");
 const mongoose = require("mongoose");
@@ -24,20 +23,25 @@ app.use((req, res, next) => {
   next();
 });
 
-console.log("les routes", process.env.API_ROOT);
-console.log("le port :", process.env.PORT);
-console.log("la chaine db", process.env.MONGO_URI_PROD);
+const requireProcessEnv = (name) => {
+  if (!process.env[name]) {
+    throw new Error("You must set the " + name + " environment variable");
+  }
+  return process.env[name];
+};
 
-app.use(process.env.API_ROOT + "/admins", adminRoutes);
-app.use(process.env.API_ROOT + "/category", categoryRoutes);
-app.use(process.env.API_ROOT + "/magazines", magazineRoutes);
-app.use(process.env.API_ROOT + "/videos", videosRoutes);
-app.use(process.env.API_ROOT + "/comments", commentRoutes);
-app.use(process.env.API_ROOT + "/users", userRoutes);
+console.log("db connection :", requireProcessEnv("MONGO_URI_PROD"));
+
+app.use("/api/admins", adminRoutes);
+app.use("/api/category", categoryRoutes);
+app.use("/api/magazines", magazineRoutes);
+app.use("/api/videos", videosRoutes);
+app.use("/api/comments", commentRoutes);
+app.use("/api/users", userRoutes);
 
 // connection to db
 mongoose
-  .connect(process.env.MONGO_URI_PROD)
+  .connect(requireProcessEnv("MONGO_URI_PROD"))
   .then(() => {
     console.log("Connected to db");
     app.listen(process.env.PORT, () => {
