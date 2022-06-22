@@ -52,7 +52,7 @@ const getAllCategories = async (req, res) => {
     console.log(error);
     return res.json({
       success: false,
-      message: "Une erreur est survenue lors de l'execution du programme",
+      message: "Une erreur est survenue lors de l'execution de la requete",
     });
   }
 };
