@@ -2,7 +2,7 @@ const Admin = require("../models/Admin");
 const jwt = require("jsonwebtoken");
 
 const createToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET);
+  return jwt.sign({ id }, "sion-backend");
 };
 
 const token = (req, res, next) => {
@@ -15,7 +15,7 @@ const token = (req, res, next) => {
       .json({ error: true, message: "Veuillez vous identifier" })
       .end();
 
-  jwt.verify(jeton, process.env.JWT_SECRET, async (err, a) => {
+  jwt.verify(jeton, "sion-backend", async (err, a) => {
     if (err)
       return res
         .status(401)

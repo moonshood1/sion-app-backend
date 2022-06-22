@@ -22,23 +22,27 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(process.env.API_ROOT + "/admins", adminRoutes);
-app.use(process.env.API_ROOT + "/category", categoryRoutes);
-app.use(process.env.API_ROOT + "/magazines", magazineRoutes);
-app.use(process.env.API_ROOT + "/videos", videosRoutes);
-app.use(process.env.API_ROOT + "/comments", commentRoutes);
-app.use(process.env.API_ROOT + "/users", userRoutes);
 
 
-console.log(process.env.MONGO_URI_PROD);
+app.use("/api/admins", adminRoutes);
+app.use("/api/category", categoryRoutes);
+app.use("/api/magazines", magazineRoutes);
+app.use("/api/videos", videosRoutes);
+app.use("/api/comments", commentRoutes);
+app.use("/api/users", userRoutes);
+
+console.log("routes", process.env.API_ROOT);
+console.log("port", process.env.PORT);
 
 // connection to db
 mongoose
-  .connect(process.env.MONGO_URI_PROD)
+  .connect(
+    "mongodb+srv://loulou:enzo2906@cluster0.xxvdbhh.mongodb.net/?retryWrites=true&w=majority"
+  )
   .then(() => {
     console.log("Connected to db");
-    app.listen(process.env.PORT, () => {
-      console.log("Listening on port", process.env.PORT);
+    app.listen(4000, () => {
+      console.log("Listening on port", 4000);
     });
   })
   .catch((e) => console.log(e));
