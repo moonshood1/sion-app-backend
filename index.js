@@ -1,4 +1,6 @@
-require("dotenv").config();
+const path = require("path");
+require("dotenv").config({ path: path.resolve(__dirname, "./.env") });
+
 const express = require("express");
 const mongoose = require("mongoose");
 
@@ -22,27 +24,24 @@ app.use((req, res, next) => {
   next();
 });
 
+console.log("les routes", process.env.API_ROOT);
+console.log("le port :", process.env.PORT);
+console.log("la chaine db", process.env.MONGO_URI_PROD);
 
-
-app.use("/api/admins", adminRoutes);
-app.use("/api/category", categoryRoutes);
-app.use("/api/magazines", magazineRoutes);
-app.use("/api/videos", videosRoutes);
-app.use("/api/comments", commentRoutes);
-app.use("/api/users", userRoutes);
-
-console.log("routes", process.env.API_ROOT);
-console.log("port", process.env.PORT);
+app.use(process.env.API_ROOT + "/admins", adminRoutes);
+app.use(process.env.API_ROOT + "/category", categoryRoutes);
+app.use(process.env.API_ROOT + "/magazines", magazineRoutes);
+app.use(process.env.API_ROOT + "/videos", videosRoutes);
+app.use(process.env.API_ROOT + "/comments", commentRoutes);
+app.use(process.env.API_ROOT + "/users", userRoutes);
 
 // connection to db
 mongoose
-  .connect(
-    "mongodb+srv://loulou:enzo2906@cluster0.xxvdbhh.mongodb.net/?retryWrites=true&w=majority"
-  )
+  .connect(process.env.MONGO_URI_PROD)
   .then(() => {
     console.log("Connected to db");
-    app.listen(4000, () => {
-      console.log("Listening on port", 4000);
+    app.listen(process.env.PORT, () => {
+      console.log("Listening on port", process.env.PORT);
     });
   })
   .catch((e) => console.log(e));
