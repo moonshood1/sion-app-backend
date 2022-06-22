@@ -29,6 +29,9 @@ app.use(process.env.API_ROOT + "/videos", videosRoutes);
 app.use(process.env.API_ROOT + "/comments", commentRoutes);
 app.use(process.env.API_ROOT + "/users", userRoutes);
 
+
+console.log(process.env.MONGO_URI_PROD);
+
 // connection to db
 mongoose
   .connect(process.env.MONGO_URI_PROD)
