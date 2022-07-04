@@ -38,7 +38,7 @@ const addComment = async ({ body }, res) => {
 
     return res.status(200).json({
       success: true,
-      message: "Votre commentaire a bien été ajoutés",
+      message: "Votre commentaire a bien été ajouté",
     });
   } catch (error) {
     console.log(error);
@@ -47,8 +47,6 @@ const addComment = async ({ body }, res) => {
       message: "Une erreur est survenue lors de l'execution de la requete",
     });
   }
-
-  return;
 };
 
 module.exports = {

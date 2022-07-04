@@ -22,6 +22,10 @@ const videosSchema = new Schema(
       type: String,
       default: null,
     },
+    thumbnail: {
+      type: String,
+      default: null,
+    },
     category: {
       type: Schema.Types.ObjectId,
       ref: "Category",

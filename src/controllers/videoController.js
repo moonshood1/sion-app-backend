@@ -76,8 +76,32 @@ const getWelcomeVideo = async (req, res) => {
   }
 };
 
+const getSingleVideo = async ({ params }, res) => {
+  try {
+    const video = await Videos.findOne({ _id: params.id });
+    if (!video) {
+      return res.status(400).json({
+        success: false,
+        message: "La video est inaccessible",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      video,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json({
+      success: false,
+      message: "Une erreur est survenue lors de l'execution de la requete",
+    });
+  }
+};
+
 module.exports = {
   getAllVideos,
   getVideosByCategories,
   getWelcomeVideo,
+  getSingleVideo,
 };

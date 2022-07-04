@@ -3,6 +3,7 @@ const Video = require("../models/Videos");
 const Magazine = require("../models/Magazine");
 const Admin = require("../models/Admin");
 const Comments = require("../models/Comment");
+const Events = require("../models/Events");
 const { createToken } = require("../services/authentication");
 
 const login = async ({ body }, res) => {
@@ -163,6 +164,7 @@ const createVideo = async ({ body }, res) => {
       description: body.description,
       url: body.url,
       category: body.category,
+      thumbnail: body.thumbnail,
     });
     return res.status(200).json({
       success: true,
@@ -239,6 +241,39 @@ const deleteComment = async ({ params }, res) => {
   }
 };
 
+const createEvent = async ({ body }, res) => {
+  try {
+    const check = await Events.findOne({ name: { $regex: body.name } });
+    if (check) {
+      return res.status(400).json({
+        success: false,
+        message:
+          "Un evenement avec un titre similaire a été enregistré dans la base de données",
+      });
+    }
+
+    await Events.create({
+      name: body.name,
+      description: body.description,
+      secondText: body.secondText,
+      thirdText: body.thirdText,
+      url: body.url,
+      image: body.image,
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: "L'evenement a bien été enregistré",
+    });
+  } catch (error) {
+    console.log(error);
+    return res.json({
+      success: false,
+      message: "Une erreur est survenue lors de l'execution du programme",
+    });
+  }
+};
+
 module.exports = {
   login,
   getAllCategories,
@@ -249,4 +284,5 @@ module.exports = {
   createVideo,
   editVideoStatus,
   deleteComment,
+  createEvent,
 };

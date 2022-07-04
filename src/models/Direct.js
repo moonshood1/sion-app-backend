@@ -2,9 +2,14 @@ const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
 
-const eventSchema = new Schema(
+const STATUS = {
+  SCHEDULED: "scheduled",
+  PUBLISHED: "published",
+};
+
+const directSchema = new Schema(
   {
-    name: {
+    title: {
       type: String,
       default: null,
     },
@@ -12,23 +17,20 @@ const eventSchema = new Schema(
       type: String,
       default: null,
     },
-    secondText: {
-      type: String,
-      default: null,
-    },
-    thirdText: {
-      type: String,
-      default: null,
-    },
     url: {
       type: String,
       default: null,
     },
-    image: {
+    status: {
       type: String,
-      default: null,
+      enum: [STATUS.SCHEDULED, STATUS.PUBLISHED],
+      default: STATUS.SCHEDULED,
     },
-    date: {
+    isNext: {
+      type: Boolean,
+      default: false,
+    },
+    scheduledAt: {
       type: Date,
       default: null,
     },
@@ -38,4 +40,4 @@ const eventSchema = new Schema(
   }
 );
 
-module.exports = mongoose.model("Event", eventSchema);
+module.exports = mongoose.model("Direct", directSchema);

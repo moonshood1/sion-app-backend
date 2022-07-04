@@ -8,6 +8,7 @@ const {
   editVideoStatus,
   login,
   deleteComment,
+  createEvent,
 } = require("../controllers/adminControllers");
 const express = require("express");
 const { token } = require("../services/authentication");
@@ -31,5 +32,7 @@ router.post("/add-category", token, createCategory);
 router.patch("/edit-video-status/:id", token, editVideoStatus);
 
 router.delete("/delete-comment/:id", token, deleteComment);
+
+router.post("/add-event", token, createEvent);
 
 module.exports = router;
