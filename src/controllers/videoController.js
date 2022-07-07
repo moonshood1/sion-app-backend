@@ -3,7 +3,10 @@ const _ = require("lodash");
 
 const getAllVideos = async (req, res) => {
   try {
-    const videos = await Videos.find({ isWelcome: false }).sort({
+    const videos = await Videos.find({
+      isWelcome: false,
+      category: { $ne: "62b335346b4fff214fe42e82" },
+    }).sort({
       createdAt: -1,
     });
 
