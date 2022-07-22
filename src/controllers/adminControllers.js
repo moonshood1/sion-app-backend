@@ -4,7 +4,10 @@ const Magazine = require("../models/Magazine");
 const Admin = require("../models/Admin");
 const Comments = require("../models/Comment");
 const Events = require("../models/Events");
+const Directs = require("../models/Direct");
 const { createToken } = require("../services/authentication");
+const moment = require("moment");
+const _ = require("lodash");
 
 const login = async ({ body }, res) => {
   try {
@@ -146,7 +149,13 @@ const getAllVideos = async (req, res) => {
   try {
     const videos = await Video.find({}).populate("category");
     return res.status(200).json({ success: true, videos });
-  } catch (error) {}
+  } catch (error) {
+    console.log(error);
+    return res.json({
+      success: false,
+      message: "Une erreur est survenue lors de l'execution du programme",
+    });
+  }
 };
 
 const createVideo = async ({ body }, res) => {
@@ -274,6 +283,94 @@ const createEvent = async ({ body }, res) => {
   }
 };
 
+const publishDirect = async ({ body }, res) => {
+  try {
+    const check = await Directs.findOne({
+      isActive: true,
+    });
+
+    if (check) {
+      await Directs.updateOne(
+        {
+          _id: check._id,
+        },
+        {
+          $set: {
+            isActive: false,
+          },
+        }
+      );
+    }
+
+    await Directs.create({
+      title: body.title,
+      description: body.description,
+      url: body.url,
+      isActive: true,
+      scheduledAt: moment(),
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: "Direct mis en ligne ",
+    });
+  } catch (error) {
+    console.log(error);
+    return res.json({
+      success: false,
+      message: "Une erreur est survenue lors de l'execution du programme",
+    });
+  }
+};
+
+const getDirects = async (req, res) => {
+  try {
+    const directs = await Directs.find({}).sort({
+      createdAt: -1,
+    });
+
+    return res.json({
+      success: true,
+      directs,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.json({
+      success: false,
+      message: "Une erreur est survenue lors de l'execution du programme",
+    });
+  }
+};
+
+const editDirect = async ({ params, body }, res) => {
+  try {
+    const check = await Directs.findOne({
+      _id: params.id,
+    });
+    if (!check) {
+      return res.status(400).json({
+        success: false,
+        message: "La video du direct a modifier est introuvable",
+      });
+    }
+
+    const updateVid = await _.assign(check, {
+      ...body,
+    }).save();
+
+    return res.json({
+      success: true,
+      message: "La video a bien été modifiée ",
+    });
+  } catch (error) {
+    console.log(error);
+    return res.json({
+      success: false,
+      message: "Une erreur est survenue lors de l'execution de la requete",
+    });
+  }
+};
+
 module.exports = {
   login,
   getAllCategories,
@@ -285,4 +382,7 @@ module.exports = {
   editVideoStatus,
   deleteComment,
   createEvent,
+  publishDirect,
+  getDirects,
+  editDirect,
 };

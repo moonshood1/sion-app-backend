@@ -3,7 +3,7 @@ const Direct = require("../models/Direct");
 const getTheActualDirect = async (req, res) => {
   try {
     const direct = await Direct.findOne({
-      isNext: true,
+      isActive: true,
     });
 
     if (!direct) {
@@ -29,7 +29,9 @@ const getTheActualDirect = async (req, res) => {
 const getOlderDirects = async (req, res) => {
   try {
     const directs = await Direct.find({
-      isNext: false,
+      isActive: false,
+    }).sort({
+      createdAt: -1,
     });
 
     return res.status(200).json({

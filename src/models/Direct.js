@@ -2,11 +2,6 @@ const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
 
-const STATUS = {
-  SCHEDULED: "scheduled",
-  PUBLISHED: "published",
-};
-
 const directSchema = new Schema(
   {
     title: {
@@ -21,12 +16,7 @@ const directSchema = new Schema(
       type: String,
       default: null,
     },
-    status: {
-      type: String,
-      enum: [STATUS.SCHEDULED, STATUS.PUBLISHED],
-      default: STATUS.SCHEDULED,
-    },
-    isNext: {
+    isActive: {
       type: Boolean,
       default: false,
     },

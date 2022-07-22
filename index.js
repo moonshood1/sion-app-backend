@@ -10,6 +10,7 @@ const videosRoutes = require("./src/routes/videos");
 const commentRoutes = require("./src/routes/comment");
 const userRoutes = require("./src/routes/user");
 const eventRoutes = require("./src/routes/event");
+const directRoutes = require("./src/routes/direct");
 
 const app = express();
 
@@ -34,6 +35,7 @@ app.use("/api/videos", videosRoutes);
 app.use("/api/comments", commentRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/events", eventRoutes);
+app.use("/api/directs", directRoutes);
 
 // connection to db
 mongoose

@@ -9,6 +9,9 @@ const {
   login,
   deleteComment,
   createEvent,
+  publishDirect,
+  getDirects,
+  editDirect,
 } = require("../controllers/adminControllers");
 const express = require("express");
 const { token } = require("../services/authentication");
@@ -34,5 +37,11 @@ router.patch("/edit-video-status/:id", token, editVideoStatus);
 router.delete("/delete-comment/:id", token, deleteComment);
 
 router.post("/add-event", token, createEvent);
+
+router.post("/publish-direct", token, publishDirect);
+
+router.get("/get-directs", token, getDirects);
+
+router.patch("/edit-direct/:id", token, editDirect);
 
 module.exports = router;
