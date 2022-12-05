@@ -11,6 +11,7 @@ const _ = require("lodash");
 
 const login = async ({ body }, res) => {
   try {
+    console.log("Bonjour");
     const checkAdmin = await Admin.findOne({ email: body.email });
     if (!checkAdmin) {
       return res.status(400).json({
